@@ -11,6 +11,7 @@ function ProductsPage() {
           <div key={product.id}>
             <p>{product.title}</p>
             <div>{product.price}$</div>
+            <div>{product.price}$</div>
             <br />
           </div>
         ))}
