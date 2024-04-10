@@ -7,7 +7,12 @@ import LoaderSpinner from "../components/LoaderSpinner";
 
 import { useProducts } from "../context/ProductContext";
 import Card from "../components/Card";
-import { filterProducts, searchProducts } from "../helper/helper";
+import {
+  createQueryObject,
+  filterProducts,
+  getInitialQuery,
+  searchProducts,
+} from "../helper/helper";
 
 function ProductsPage() {
   const products = useProducts();
@@ -19,24 +24,27 @@ function ProductsPage() {
 
   useEffect(() => {
     setDisplayed(products);
+
+    setQuery(getInitialQuery(searchParams));
   }, [products]);
 
   useEffect(() => {
     setSearchParams(query);
+    setSearch(query.search);
     let finalProducts = searchProducts(products, query.search);
     finalProducts = filterProducts(finalProducts, query.category);
     setDisplayed(finalProducts);
   }, [query]);
 
   const handleSearch = () => {
-    setQuery((query) => ({ ...query, search: search }));
+    setQuery((query) => createQueryObject(query, { search: search }));
     setSearch("");
   };
 
   const categoryHandler = (e) => {
     const { tagName } = e.target;
     const category = e.target.innerText.toLowerCase();
-    setQuery((query) => ({ ...query, category: category }));
+    setQuery((query) => createQueryObject(query, { category: category }));
 
     if (tagName !== "LI") return;
   };
