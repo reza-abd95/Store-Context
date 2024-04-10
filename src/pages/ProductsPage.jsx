@@ -1,10 +1,13 @@
-import { ImSearch } from "react-icons/im";
-import { FaListUl } from "react-icons/fa";
-
 import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+
+import { FaListUl } from "react-icons/fa";
+import { ImSearch } from "react-icons/im";
+import LoaderSpinner from "../components/LoaderSpinner";
+
 import { useProducts } from "../context/ProductContext";
 import Card from "../components/Card";
-import LoaderSpinner from "../components/LoaderSpinner";
+import { filterProducts, searchProducts } from "../helper/helper";
 
 function ProductsPage() {
   const products = useProducts();
@@ -12,29 +15,30 @@ function ProductsPage() {
   const [displayed, setDisplayed] = useState([]);
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState({});
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     setDisplayed(products);
   }, [products]);
 
   useEffect(() => {
-    console.log(query);
+    setSearchParams(query);
+    let finalProducts = searchProducts(products, query.search);
+    finalProducts = filterProducts(finalProducts, query.category);
+    setDisplayed(finalProducts);
   }, [query]);
 
   const handleSearch = () => {
     setQuery((query) => ({ ...query, search: search }));
     setSearch("");
-    console.log(query);
   };
 
   const categoryHandler = (e) => {
     const { tagName } = e.target;
     const category = e.target.innerText.toLowerCase();
     setQuery((query) => ({ ...query, category: category }));
-    console.log(query);
 
     if (tagName !== "LI") return;
-    console.log(category, tagName);
   };
 
   return (
