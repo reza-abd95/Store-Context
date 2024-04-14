@@ -13,6 +13,7 @@ import {
   searchProducts,
 } from "../helper/helper";
 import SearchBox from "../components/SearchBox";
+import SideBar from "../components/SideBar";
 
 function ProductsPage() {
   const products = useProducts();
@@ -36,14 +37,6 @@ function ProductsPage() {
     setDisplayed(finalProducts);
   }, [query]);
 
-  const categoryHandler = (e) => {
-    const { tagName } = e.target;
-    const category = e.target.innerText.toLowerCase();
-    setQuery((query) => createQueryObject(query, { category: category }));
-
-    if (tagName !== "LI") return;
-  };
-
   return (
     <>
       <SearchBox setSearch={setSearch} search={search} setQuery={setQuery} />
@@ -54,18 +47,7 @@ function ProductsPage() {
             <Card key={product.id} data={product} />
           ))}
         </div>
-        <div>
-          <div>
-            <FaListUl /> <p>Categories</p>
-          </div>
-          <ul onClick={categoryHandler} className="[&>li]:cursor-pointer">
-            <li>All</li>
-            <li>Electronics</li>
-            <li>Jewelery</li>
-            <li>Men's Clothing</li>
-            <li>Women's Clothing</li>
-          </ul>
-        </div>
+        <SideBar setQuery={setQuery} />
       </div>
     </>
   );
