@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-
-import { FaListUl } from "react-icons/fa";
 import LoaderSpinner from "../components/LoaderSpinner";
 
 import { useProducts } from "../context/ProductContext";
 import Card from "../components/Card";
 import {
-  createQueryObject,
   filterProducts,
   getInitialQuery,
   searchProducts,
