@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { FaListUl } from "react-icons/fa";
-import { ImSearch } from "react-icons/im";
 import LoaderSpinner from "../components/LoaderSpinner";
 
 import { useProducts } from "../context/ProductContext";
@@ -13,6 +12,7 @@ import {
   getInitialQuery,
   searchProducts,
 } from "../helper/helper";
+import SearchBox from "../components/SearchBox";
 
 function ProductsPage() {
   const products = useProducts();
@@ -36,11 +36,6 @@ function ProductsPage() {
     setDisplayed(finalProducts);
   }, [query]);
 
-  const handleSearch = () => {
-    setQuery((query) => createQueryObject(query, { search: search }));
-    setSearch("");
-  };
-
   const categoryHandler = (e) => {
     const { tagName } = e.target;
     const category = e.target.innerText.toLowerCase();
@@ -51,17 +46,7 @@ function ProductsPage() {
 
   return (
     <>
-      <div>
-        <input
-          type="text"
-          placeholder="search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value.toLowerCase().trim())}
-        />
-        <button onClick={handleSearch}>
-          <ImSearch />
-        </button>
-      </div>
+      <SearchBox setSearch={setSearch} search={search} setQuery={setQuery} />
       <div className="flex justify-between">
         <div className="w-full flex  flex-wrap justify-between">
           {!displayed.length && <LoaderSpinner />}
