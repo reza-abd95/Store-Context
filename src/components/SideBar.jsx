@@ -1,8 +1,9 @@
 import React from "react";
 import { FaListUl } from "react-icons/fa";
 import { createQueryObject } from "../helper/helper";
+import { categories } from "../constants/list";
 
-function SideBar({ setQuery }) {
+function SideBar({ query, setQuery }) {
   const categoryHandler = (e) => {
     const { tagName } = e.target;
     const category = e.target.innerText.toLowerCase();
@@ -19,11 +20,17 @@ function SideBar({ setQuery }) {
         onClick={categoryHandler}
         className="[&>li]:cursor-pointer [&>li]:p-1 [&>li]:list-none [&>li:hover]:text-red-500 "
       >
-        <li>All</li>
-        <li>Electronics</li>
-        <li>Jewelery</li>
-        <li>Men's Clothing</li>
-        <li>Women's Clothing</li>
+        {categories.map((item) => (
+          <li
+            className={
+              item.type.toLowerCase() == query.category
+                ? "border-2 border-dashed border-red-300 rounded-2xl"
+                : null
+            }
+          >
+            {item.type}
+          </li>
+        ))}
       </ul>
     </div>
   );
